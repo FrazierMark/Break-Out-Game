@@ -16,7 +16,7 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="myCanvas" width="480" height="320"></canvas>
+		<canvas id="myCanvas" width="580" height="380"></canvas>
 
 		<script>
 			let canvas = document.getElementById('myCanvas');
@@ -31,8 +31,8 @@
 			let paddleX = (canvas.width - paddleWidth) / 2;
 			let rightPressed = false;
 			let leftPressed = false;
-			let brickRowCount = 5;
-			let brickColumnCount = 3;
+			let brickRowCount = canvas.width / 100;
+			let brickColumnCount = canvas.height / 70;
 			let brickWidth = 75;
 			let brickHeight = 20;
 			let brickPadding = 10;
@@ -119,7 +119,7 @@
 			function createRandomColorForRow(row) {
 				let baseColor = 120;
 				let saturation = 70;
-				let variation = row * 10;
+				let variation = row * 40;
 
 				let r = (baseColor + variation) % 256;
 				let g = (baseColor + variation + 60) % 256;
