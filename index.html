@@ -41,7 +41,7 @@
 			let score = 0;
 			let lives = 3;
 			let ballColor = createRandomColor();
-      let paddleColor = createRandomColor();
+			let paddleColor = createRandomColor();
 
 			let bricks = [];
 			for (let c = 0; c < brickColumnCount; c++) {
@@ -112,6 +112,18 @@
 				return '#' + hex;
 			}
 
+			function createRandomColorForRow(row) {
+				let baseColor = 120;
+				let saturation = 70;
+				let variation = row * 10;
+
+				let r = (baseColor + variation) % 256;
+				let g = (baseColor + variation + 60) % 256;
+				let b = (baseColor + variation + 120) % 256;
+
+				return `rgb(${r}, ${g}, ${b})`;
+			}
+
 			function drawBall() {
 				ctx.beginPath();
 				ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -142,7 +154,7 @@
 							bricks[c][r].y = brickY;
 							ctx.beginPath();
 							ctx.rect(brickX, brickY, brickWidth, brickHeight);
-							ctx.fillStyle = createRandomColor();
+							ctx.fillStyle = createRandomColorForRow(r);
 							ctx.fill();
 							ctx.closePath();
 						}
