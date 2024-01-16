@@ -44,8 +44,8 @@
 			let paddleColor = createRandomColor();
 
 			let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-			gradient.addColorStop(0, '#ff0000');
-			gradient.addColorStop(1, '#0000ff');
+			gradient.addColorStop(0, createRandomColor());
+			gradient.addColorStop(1, createRandomColor());
 
 			let bricks = [];
 			for (let c = 0; c < brickColumnCount; c++) {
