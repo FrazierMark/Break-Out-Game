@@ -59,6 +59,10 @@
 			document.addEventListener('keyup', keyUpHandler, false);
 			document.addEventListener('mousemove', mouseMoveHandler, false);
 
+			function getRandomNumber(min, max) {
+				return Math.random() * (max - min) + min;
+			}
+
 			function keyDownHandler(e) {
 				if (e.key == 'Right' || e.key == 'ArrowRight') {
 					rightPressed = true;
@@ -153,6 +157,10 @@
 					for (let r = 0; r < brickRowCount; r++) {
 						if (bricks[c][r].status == 1) {
 							let brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
+							// Add Offset to each row
+							if (c % 2 !== 0) {
+								brickX += brickWidth / 2;
+							}
 							let brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
 							bricks[c][r].x = brickX;
 							bricks[c][r].y = brickY;
