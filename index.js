@@ -20,7 +20,7 @@ const brickOffsetLeft = 30;
 let score = 0;
 let lives = 3;
 
-function createRandomColor() {
+const createRandomColor = () => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
@@ -50,23 +50,23 @@ for (let c = 0; c < brickColumnCount; c += 1) {
   }
 }
 
-function keyDownHandler(e) {
+const keyDownHandler = (e) => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = true;
   }
-}
+};
 
-function keyUpHandler(e) {
+const keyUpHandler = (e) => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
     leftPressed = false;
   }
-}
+};
 
-function mouseMoveHandler(e) {
+const mouseMoveHandler = (e) => {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
     paddleX = relativeX - paddleWidth / 2;
@@ -77,7 +77,7 @@ document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseMoveHandler, false);
 
-function collisionDetection() {
+const collisionDetection = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       const b = bricks[c][r];
@@ -105,9 +105,9 @@ function collisionDetection() {
       }
     }
   }
-}
+};
 
-function createRandomColorForRow(row) {
+const createRandomColorForRow = (row) => {
   const baseColor = 120;
   const variation = row * 40;
 
@@ -116,17 +116,17 @@ function createRandomColorForRow(row) {
   const b = (baseColor + variation + 120) % 256;
 
   return `rgb(${r}, ${g}, ${b})`;
-}
+};
 
-function drawBall() {
+const drawBall = () => {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
   ctx.fillStyle = ballColor;
   ctx.fill();
   ctx.closePath();
-}
+};
 
-function drawPaddle() {
+const drawPaddle = () => {
   ctx.beginPath();
   ctx.rect(
     paddleX,
@@ -137,8 +137,9 @@ function drawPaddle() {
   ctx.fillStyle = paddleColor;
   ctx.fill();
   ctx.closePath();
-}
-function drawBricks() {
+};
+
+const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
@@ -158,19 +159,19 @@ function drawBricks() {
       }
     }
   }
-}
-function drawScore() {
+};
+const drawScore = () => {
   ctx.font = '16px Arial';
   ctx.fillStyle = '#0095DD';
   ctx.fillText(`Score: ${score}`, 8, 20);
-}
-function drawLives() {
+};
+const drawLives = () => {
   ctx.font = '16px Arial';
   ctx.fillStyle = '#0095DD';
   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
-}
+};
 
-function draw() {
+const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = gradient;
@@ -215,6 +216,6 @@ function draw() {
   x += dx;
   y += dy;
   requestAnimationFrame(draw);
-}
+};
 
 draw();
