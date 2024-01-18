@@ -33,7 +33,7 @@ const createRandomColor = () => {
   }).join('');
 
   return `#${hex}`;
-}
+};
 
 const ballColor = createRandomColor();
 const paddleColor = createRandomColor();
@@ -71,7 +71,7 @@ const mouseMoveHandler = (e) => {
   if (relativeX > 0 && relativeX < canvas.width) {
     paddleX = relativeX - paddleWidth / 2;
   }
-}
+};
 
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
