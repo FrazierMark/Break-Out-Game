@@ -84,10 +84,10 @@ const collisionDetection = () => {
         const ballBottomEdge = y + ballRadius;
 
         if (
-          ballRightEdge > brickX &&
-          ballLeftEdge < brickX + brickWidth &&
-          ballBottomEdge > brickY &&
-          ballTopEdge < brickY + brickHeight
+          ballRightEdge > brickX
+          && ballLeftEdge < brickX + brickWidth
+          && ballBottomEdge > brickY
+          && ballTopEdge < brickY + brickHeight
         ) {
           dy = -dy;
           bricks[c][r].status = 0;
