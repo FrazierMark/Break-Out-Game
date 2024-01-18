@@ -51,19 +51,15 @@ for (let c = 0; c < brickColumnCount; c += 1) {
 }
 
 const keyDownHandler = (e) => {
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
-    rightPressed = true;
-  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-    leftPressed = true;
-  }
+  const { key } = e;
+  rightPressed = key === 'Right' || key === 'ArrowRight';
+  leftPressed = key === 'Left' || key === 'ArrowLeft';
 };
 
 const keyUpHandler = (e) => {
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
-    rightPressed = false;
-  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-    leftPressed = false;
-  }
+  const { key } = e;
+  rightPressed = key === 'Right' || key === 'ArrowRight' ? false : rightPressed;
+  leftPressed = key === 'Left' || key === 'ArrowLeft' ? false : leftPressed;
 };
 
 const mouseMoveHandler = (e) => {
@@ -80,22 +76,21 @@ document.addEventListener('mousemove', mouseMoveHandler, false);
 const collisionDetection = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
-      const b = bricks[c][r];
-      if (b.status === 1) {
-        // Calculate the edges of the ball
+      const { status, x: brickX, y: brickY } = bricks[c][r];
+      if (status === 1) {
         const ballLeftEdge = x - ballRadius;
         const ballRightEdge = x + ballRadius;
         const ballTopEdge = y - ballRadius;
         const ballBottomEdge = y + ballRadius;
 
         if (
-          ballRightEdge > b.x
-          && ballLeftEdge < b.x + brickWidth
-          && ballBottomEdge > b.y
-          && ballTopEdge < b.y + brickHeight
+          ballRightEdge > brickX &&
+          ballLeftEdge < brickX + brickWidth &&
+          ballBottomEdge > brickY &&
+          ballTopEdge < brickY + brickHeight
         ) {
           dy = -dy;
-          b.status = 0;
+          bricks[c][r].status = 0;
           score += 1;
           if (score === brickRowCount * brickColumnCount) {
             alert('YOU WIN, CONGRATS!');
@@ -142,9 +137,9 @@ const drawPaddle = () => {
 const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
-      if (bricks[c][r].status === 1) {
+      const { status } = bricks[c][r];
+      if (status === 1) {
         let brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
-        // Add Offset to each row
         if (c % 2 !== 0) {
           brickX += brickWidth / 2;
         }
@@ -160,6 +155,7 @@ const drawBricks = () => {
     }
   }
 };
+
 const drawScore = () => {
   ctx.font = '16px Arial';
   ctx.fillStyle = '#0095DD';
