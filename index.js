@@ -1,10 +1,11 @@
-// eslint-disable-next-line import/extensions
 import Brick from './Brick.js';
-// eslint-disable-next-line import/extensions
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
 import Lives from './Lives.js';
 import Score from './Score.js';
+import createRandomColor from './RandomColor.js';
+import Background from './Background.js';
+import CollisionDetection from './CollisionDetection.js';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
@@ -15,7 +16,6 @@ const dx = 2;
 const dy = -2;
 const paddleHeight = 10;
 const paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
 const brickRowCount = canvas.width / 100;
@@ -27,21 +27,6 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 let scoreCount = 0;
 let livesCount = 3;
-
-const createRandomColor = () => {
-	const r = Math.floor(Math.random() * 256);
-	const g = Math.floor(Math.random() * 256);
-	const b = Math.floor(Math.random() * 256);
-	const rgb = [r, g, b];
-	const hex = rgb
-		.map((component) => {
-			const hexComponent = component.toString(16);
-			return hexComponent.length === 1 ? `0${hexComponent}` : hexComponent;
-		})
-		.join('');
-
-	return `#${hex}`;
-};
 
 const ball = new Ball(x, y, ballRadius, createRandomColor());
 
@@ -55,22 +40,15 @@ const paddle = new Paddle(
 
 const score = new Score(scoreCount, 8, 20, createRandomColor());
 const lives = new Lives(livesCount, canvas.width - 65, 20, createRandomColor());
-
-const drawPaddle = () => {
-	paddle.render(ctx);
-};
-
-const drawScore = () => {
-	score.render(ctx);
-};
-
-const drawLives = () => {
-	lives.render(ctx);
-};
-
-const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-gradient.addColorStop(0, createRandomColor());
-gradient.addColorStop(1, createRandomColor());
+const background = new Background(
+	0,
+	0,
+	canvas.width,
+	canvas.height,
+	createRandomColor(),
+	createRandomColor(),
+	ctx
+);
 
 const bricks = [];
 for (let c = 0; c < brickColumnCount; c += 1) {
@@ -103,34 +81,15 @@ document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseMoveHandler, false);
 
-const collisionDetection = () => {
-	for (let c = 0; c < brickColumnCount; c += 1) {
-		for (let r = 0; r < brickRowCount; r += 1) {
-			const { status, x: brickX, y: brickY } = bricks[c][r];
-			if (status === 1) {
-				const ballLeftEdge = ball.x - ball.radius;
-				const ballRightEdge = ball.x + ball.radius;
-				const ballTopEdge = ball.y - ball.radius;
-				const ballBottomEdge = ball.y + ball.radius;
-
-				if (
-					ballRightEdge > brickX &&
-					ballLeftEdge < brickX + brickWidth &&
-					ballBottomEdge > brickY &&
-					ballTopEdge < brickY + brickHeight
-				) {
-					ball.dy = -ball.dy; // Invert the y-direction to bounce off
-					bricks[c][r].status = 0;
-					score.score += 1;
-					if (score.score === brickRowCount * brickColumnCount) {
-						alert('YOU WIN, CONGRATS!');
-						document.location.reload();
-					}
-				}
-			}
-		}
-	}
-};
+const collisionDetection = new CollisionDetection(
+	ball,
+	bricks,
+	brickRowCount,
+	brickColumnCount,
+	brickWidth,
+	brickHeight,
+	score
+);
 
 const drawBricks = () => {
 	for (let c = 0; c < brickColumnCount; c += 1) {
@@ -151,16 +110,14 @@ const drawBricks = () => {
 };
 
 const draw = () => {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	background.render(ctx);
 	ball.move();
 	ball.render(ctx);
 	drawBricks();
-	drawPaddle();
-	drawScore();
-	drawLives();
-	collisionDetection();
+	paddle.render(ctx);
+	score.render(ctx);
+	lives.render(ctx);
+	collisionDetection.detectCollisions();
 
 	if (
 		ball.x + ball.dx > canvas.width - ball.radius ||
