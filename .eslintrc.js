@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: 'airbnb-base',
+  "indent": [tab, 2],
   overrides: [
     {
       env: {
