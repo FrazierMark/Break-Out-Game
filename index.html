@@ -8,6 +8,11 @@
 				padding: 0;
 				margin: 0;
 			}
+			.canvas-container {
+				display: flex;
+				flex-direction: column;
+				margin-top: 15em;
+			}
 			canvas {
 				background: #eee;
 				display: block;
@@ -16,7 +21,9 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="myCanvas" width="580" height="380"></canvas>
+		<div class="canvas-container">
+			<canvas id="myCanvas" width="580" height="380"></canvas>
+		</div>
 		<script src="index.js" type="module"></script>
 	</body>
 </html>

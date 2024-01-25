@@ -1,4 +1,3 @@
-import Brick from './Brick.js';
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
 import Lives from './Lives.js';
@@ -6,6 +5,7 @@ import Score from './Score.js';
 import createRandomColor from './RandomColor.js';
 import Background from './Background.js';
 import CollisionDetection from './CollisionDetection.js';
+import Bricks from './Bricks.js';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
@@ -50,13 +50,13 @@ const background = new Background(
 	ctx
 );
 
-const bricks = [];
-for (let c = 0; c < brickColumnCount; c += 1) {
-	bricks[c] = [];
-	for (let r = 0; r < brickRowCount; r += 1) {
-		bricks[c][r] = new Brick(0, 0, 75, 20, createRandomColor());
-	}
-}
+const bricks = new Bricks(brickRowCount, brickColumnCount, brickWidth, brickHeight, brickPadding, brickOffsetLeft, brickOffsetTop);
+
+const collisionDetection = new CollisionDetection(
+	ball,
+	bricks,
+	score
+);
 
 const keyDownHandler = (e) => {
 	const { key } = e;
@@ -81,39 +81,12 @@ document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseMoveHandler, false);
 
-const collisionDetection = new CollisionDetection(
-	ball,
-	bricks,
-	brickRowCount,
-	brickColumnCount,
-	brickWidth,
-	brickHeight,
-	score
-);
-
-const drawBricks = () => {
-	for (let c = 0; c < brickColumnCount; c += 1) {
-		for (let r = 0; r < brickRowCount; r += 1) {
-			const { status } = bricks[c][r];
-			if (status === 1) {
-				let brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
-				if (c % 2 !== 0) {
-					brickX += brickWidth / 2;
-				}
-				const brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
-				bricks[c][r].x = brickX;
-				bricks[c][r].y = brickY;
-				bricks[c][r].render(ctx);
-			}
-		}
-	}
-};
 
 const draw = () => {
 	background.render(ctx);
 	ball.move();
 	ball.render(ctx);
-	drawBricks();
+  bricks.render(ctx);
 	paddle.render(ctx);
 	score.render(ctx);
 	lives.render(ctx);
