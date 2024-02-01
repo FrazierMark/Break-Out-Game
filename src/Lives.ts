@@ -1,7 +1,12 @@
-import Sprite from './Sprite.js';
+import Sprite from './Sprite';
 
 class Lives extends Sprite {
-	constructor(lives, width, height = 20, color) {
+	lives: number;
+	width: number;
+	height: number;
+	color: string;
+
+	constructor(lives: number, width: number, height = 20, color: string) {
     super()
 		this.lives = lives;
 		this.width = width;
@@ -9,7 +14,7 @@ class Lives extends Sprite {
 		this.color = color;
 	}
 
-	render(ctx) {
+	render(ctx: CanvasRenderingContext2D) {
 		ctx.font = '16px Arial';
 		ctx.fillStyle = this.color;
 		ctx.fillText(`Lives: ${this.lives}`, this.width, this.height);

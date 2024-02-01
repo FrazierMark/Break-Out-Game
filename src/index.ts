@@ -1,13 +1,12 @@
-import Ball from './Ball.js';
-import Paddle from './Paddle.js';
-import Lives from './Lives.js';
-import Score from './Score.js';
-import createRandomColor from './RandomColor.js';
-import Background from './Background.js';
-import CollisionDetection from './CollisionDetection.js';
-import Bricks from './Bricks.js';
-
-const canvas = document.getElementById('myCanvas');
+import Ball from './Ball';
+import Paddle from './Paddle';
+import Lives from './Lives';
+import Score from './Score';
+import createRandomColor from './RandomColor';
+import Background from './Background';
+import CollisionDetection from './CollisionDetection';
+import Bricks from './Bricks';
+const canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
 const ballRadius = 10;
 let x = canvas.width / 2;
@@ -58,19 +57,19 @@ const collisionDetection = new CollisionDetection(
 	score
 );
 
-const keyDownHandler = (e) => {
+const keyDownHandler = (e: KeyboardEvent) => {
 	const { key } = e;
 	rightPressed = key === 'Right' || key === 'ArrowRight';
 	leftPressed = key === 'Left' || key === 'ArrowLeft';
 };
 
-const keyUpHandler = (e) => {
+const keyUpHandler = (e: KeyboardEvent) => {
 	const { key } = e;
 	rightPressed = key === 'Right' || key === 'ArrowRight' ? false : rightPressed;
 	leftPressed = key === 'Left' || key === 'ArrowLeft' ? false : leftPressed;
 };
 
-const mouseMoveHandler = (e) => {
+const mouseMoveHandler = (e: MouseEvent) => {
 	const relativeX = e.clientX - canvas.offsetLeft;
 	if (relativeX > 0 && relativeX < canvas.width) {
 		paddle.x = relativeX - paddle.width / 2;

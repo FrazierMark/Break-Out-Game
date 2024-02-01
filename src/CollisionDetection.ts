@@ -1,5 +1,13 @@
+import Ball from './Ball';
+import Brick from './Brick';
+import Bricks from './Bricks';
+
 class CollisionDetection {
-  constructor(ball, bricks, score) {
+  ball: Ball;
+  bricks: Bricks;
+  score: { score: number}
+
+  constructor(ball: Ball, bricks: Bricks, score: { score: number}) {
     this.ball = ball;
     this.bricks = bricks;
     this.score = score;

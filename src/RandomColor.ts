@@ -14,3 +14,8 @@ const createRandomColor = () => {
 };
 
 export default createRandomColor
+
+// const createRandomColor = () => {
+// 	const hue = Math.random() * 360;
+// 	return `hsl(${hue}, 100%, 50%)`
+// }
